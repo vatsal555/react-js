@@ -1,13 +1,66 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const navigate = useNavigate();
 
   const handleSignup = (e) => {
     e.preventDefault();
+
+    setErrors({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+
+    const validateErrors = {};
+
+    if (!name) {
+      validateErrors.name = "Name is required";
+    }
+
+    if (!email) {
+      validateErrors.email = "Email is required";
+    }
+
+    if (!password) {
+      validateErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      validateErrors.password = "Password must be greater than 6";
+    }
+
+    if (!confirmPassword) {
+      validateErrors.confirmPassword = "Confirm Password is required";
+    } else if (confirmPassword !== password) {
+      validateErrors.confirmPassword = "Password does not match";
+    }
+
+    if (Object.keys(validateErrors).length > 0) {
+      setErrors(validateErrors);
+      return;
+    }
+
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+
+    navigate("/login");
+
+    toast.success("Succesfully Signup");
   };
 
   return (
@@ -30,9 +83,14 @@ const SignUp = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className={`w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500${
+                errors.name ? "border-red-500" : ""
+              }`}
               placeholder="Enter your full name"
             />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name}</p>
+            )}
           </div>
 
           <div className="mb-4">
@@ -47,9 +105,14 @@ const SignUp = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className={`w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500${
+                errors.email ? "border-red-500" : ""
+              }`}
               placeholder="Enter your email"
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
           </div>
 
           <div className="mb-4">
@@ -64,9 +127,14 @@ const SignUp = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className={`w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500${
+                errors.password ? "border-red-500" : ""
+              }`}
               placeholder="Enter your password"
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
+            )}
           </div>
 
           <div className="mb-6">
@@ -81,9 +149,14 @@ const SignUp = () => {
               id="confirm-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className={`w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500${
+                errors.confirmPassword ? "border-red-500" : ""
+              }`}
               placeholder="Confirm your password"
             />
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+            )}
           </div>
 
           <button

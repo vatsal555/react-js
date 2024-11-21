@@ -5,16 +5,43 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
+
+    setErrors({
+      email: "",
+      password: "",
+    });
+
+    const validateErrors = {};
+
+    if (!email) {
+      validateErrors.email = "Email is required";
+    }
+
+    if (!password) {
+      validateErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      validateErrors.password = "Password must be greater than 6";
+    }
+
+    if (Object.keys(validateErrors).length > 0) {
+      setErrors(validateErrors);
+      return;
+    }
+
     setEmail("");
     setPassword("");
+
+    navigate("/");
+    toast.success("Successfully Login");
   };
 
-  const success = () => toast.success("Success");
+  // const success = () => toast.success("Success");
 
   return (
     <div className="h-screen bg-gradient-to-r from-blue-500 via-teal-500 to-indigo-500 flex items-center justify-center">
@@ -36,9 +63,14 @@ const Login = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className={`w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500${
+                errors.email ? "border-red-500" : ""
+              }`}
               placeholder="Enter your email"
-            />
+            />{" "}
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            )}
           </div>
 
           <div className="mb-6">
@@ -53,18 +85,19 @@ const Login = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className={`w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.password ? "border-red-500" : ""
+              }`}
               placeholder="Enter your password"
-            />
+            />{" "}
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+            )}
           </div>
 
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-3 rounded-md font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
-            onClick={() => {
-              navigate("/");
-              success;
-            }}
           >
             Login
           </button>
