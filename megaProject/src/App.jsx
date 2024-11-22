@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-      <h1>Mega Blog app with Appwrite</h1>
+      <h1>Blogify app with Appwrite</h1>
     </>
   );
 }
