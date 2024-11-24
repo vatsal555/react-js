@@ -5,8 +5,8 @@ const initialState = {
   userData: null,
 };
 
-export const authSlice = createSlice({
-  name: "Auth",
+const authSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {
     login: (state, action) => {

@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { Button, Input, RTE, Select } from "../index";
+import { Button, Input, RTE, Select } from "..";
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -64,12 +64,9 @@ export default function PostForm({ post }) {
         .replace(/\s/g, "-");
 
     return "";
-    // const slug = value.toLowerCase().replace(/ /g, '-')
-    // setValue('slug', slug)
-    // return slug
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "title") {
         setValue("slug", slugTransform(value.title), { shouldValidate: true });

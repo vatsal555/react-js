@@ -1,12 +1,12 @@
+import React, { useState } from "react";
 import authService from "../appwrite/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/authSlice";
-import { Button, Input, Logo } from "./index";
+import { Button, Input, Logo } from "./index.js";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import React, { useState } from "react";
 
-function SignUp() {
+function Signup() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
@@ -25,6 +25,7 @@ function SignUp() {
       setError(error.message);
     }
   };
+
   return (
     <div className="flex items-center justify-center">
       <div
@@ -89,4 +90,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Signup;
